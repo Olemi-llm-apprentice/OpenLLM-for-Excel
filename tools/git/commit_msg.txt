@@ -1,0 +1,9 @@
+feat: マルチプロバイダー対応と画像生成・ファイルアップロード機能を追加
+
+- OpenAI、Anthropic Claude、Google Geminiの3プロバイダーに対応
+- 最新モデルを追加（GPT-4.1、Claude Sonnet 4.5、Gemini 2.5 Pro等）
+- 画像生成機能を実装（OpenAI GPT Image 1、Gemini 3 Pro Image）
+- ファイルアップロード（Vision）機能を実装（画像・PDF対応）
+- 各プロバイダーのAPIドキュメントをdocs/に追加
+- README.mdを全面更新（英語版＋日本語版）
+- UIに画像生成ボタンとファイルアップロード機能を追加

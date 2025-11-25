@@ -32,23 +32,41 @@
 <div id="model-select-container">
   <label for="model-select">モデル選択:</label>
   <select id="model-select">
-    <optgroup label="OpenAI">
-      <option value="gpt-4o">GPT-4o</option>
-      <option value="gpt-4o-mini">GPT-4o mini</option>
-      <option value="gpt-4-turbo">GPT-4 Turbo</option>
-      <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+    <optgroup label="OpenAI チャット">
+      <option value="openai:gpt-4o">GPT-4o（推奨・画像入力対応）</option>
+      <option value="openai:gpt-4o-mini">GPT-4o mini（画像入力対応）</option>
+      <option value="openai:gpt-4.1">GPT-4.1</option>
+      <option value="openai:gpt-4-turbo">GPT-4 Turbo</option>
+    </optgroup>
+    <optgroup label="OpenAI 画像生成">
+      <option value="openai-image:gpt-image-1">GPT Image 1（画像生成）</option>
     </optgroup>
     <optgroup label="Anthropic Claude">
-      <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
-      <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku</option>
-      <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+      <option value="claude:claude-sonnet-4-5-20250929">Claude Sonnet 4.5（推奨・画像/PDF入力対応）</option>
+      <option value="claude:claude-haiku-4-5-20251001">Claude Haiku 4.5（画像/PDF入力対応）</option>
+      <option value="claude:claude-opus-4-5-20251101">Claude Opus 4.5（画像/PDF入力対応）</option>
+    </optgroup>
+    <optgroup label="Google Gemini チャット">
+      <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash（推奨・画像/PDF入力対応）</option>
+      <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash（画像/PDF入力対応）</option>
+      <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro（画像/PDF入力対応）</option>
+    </optgroup>
+    <optgroup label="Google Gemini 画像生成">
+      <option value="gemini-image:gemini-3-pro-image-preview">Gemini 3 Pro Image（画像生成）</option>
     </optgroup>
   </select>
+</div>
+<div id="file-upload-container">
+  <label for="file-input">📎 ファイル添付（画像/PDF）:</label>
+  <input type="file" id="file-input" accept="image/*,.pdf" multiple />
+  <div id="file-preview"></div>
+  <button id="clear-files-button" style="display:none;">添付をクリア</button>
 </div>
 <div id="chat-container">
   <div id="message-area" class="markdown-body"></div> 
   <input type="text" id="message-input" placeholder="メッセージを入力"/>
   <button id="send-button">送信</button>
+  <button id="generate-image-button">画像生成</button>
   <button id="execute-excel-code-button">マクロ実行</button>
 </div>
 <div id="cell-info">
