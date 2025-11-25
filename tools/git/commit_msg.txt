@@ -1,9 +1,9 @@
-feat: マルチプロバイダー対応と画像生成・ファイルアップロード機能を追加
+docs: 設計仕様書とCursor Rules/Commandsを追加
 
-- OpenAI、Anthropic Claude、Google Geminiの3プロバイダーに対応
-- 最新モデルを追加（GPT-4.1、Claude Sonnet 4.5、Gemini 2.5 Pro等）
-- 画像生成機能を実装（OpenAI GPT Image 1、Gemini 3 Pro Image）
-- ファイルアップロード（Vision）機能を実装（画像・PDF対応）
-- 各プロバイダーのAPIドキュメントをdocs/に追加
-- README.mdを全面更新（英語版＋日本語版）
-- UIに画像生成ボタンとファイルアップロード機能を追加
+- docs/specs/ に設計仕様書を作成（アーキテクチャ、APIキー管理、LLM統合等）
+- .cursor/rules/design-specification.mdc を追加（設計仕様書作成ルール）
+- .cursor/commands/ に設計仕様書・作業ログ用コマンドを追加
+- APIキー管理のハイブリッド実装（環境変数/Office Settings/UI入力）
+- README.md にAPIキー設定方法を詳細に記載
+- config.js モジュールを新規作成
+- webpack.config.js に環境変数対応（DefinePlugin）

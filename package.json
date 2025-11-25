@@ -32,6 +32,7 @@
     "core-js": "^3.47.0"
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "@babel/core": "^7.28.5",
     "@babel/preset-env": "^7.28.5",
     "@types/office-js": "^1.0.560",

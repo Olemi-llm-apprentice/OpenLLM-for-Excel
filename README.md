@@ -65,11 +65,78 @@ npm run dev-server
 npm run start
 ```
 
+## 🔑 API Key Configuration
+
+This add-in supports **three methods** for API key management, with the following priority:
+
+| Priority | Method | Best For |
+|:--------:|--------|----------|
+| 1 | Environment Variables | Developers, CI/CD |
+| 2 | Office Settings API | End Users (saved & synced) |
+| 3 | UI Input Field | Quick testing |
+
+### Method 1: Environment Variables (Recommended for Development)
+
+1. Copy the example file:
+```bash
+cp .env.local.example .env.local
+```
+
+2. Edit `.env.local` with your API keys:
+```bash
+# OpenAI
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx
+
+# Anthropic Claude
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxxxxx
+
+# Google Gemini
+GEMINI_API_KEY=AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+3. Restart the development server:
+```bash
+npm run dev-server
+```
+
+> **Note**: `.env.local` is gitignored and will never be committed.
+
+### Method 2: Office Settings API (Recommended for End Users)
+
+1. Enter your API key in the input field
+2. Click **💾 Save** button
+3. Your key is securely stored in your Microsoft account
+4. The key will automatically sync across devices
+
+> **Benefits**: 
+> - Keys are stored in Microsoft's cloud (not browser localStorage)
+> - Automatic sync across all your devices
+> - Persists even after clearing browser data
+
+### Method 3: UI Input (For Quick Testing)
+
+Simply enter your API key in the input field and use immediately.
+
+> **Note**: Keys entered this way are not saved and must be re-entered each session.
+
+### Testing Your API Key
+
+Click the **🔌 Test** button to verify your API key works correctly before use.
+
+### Security Notes
+
+⚠️ **Important Security Information**:
+
+- API keys are sent directly from your browser to the LLM provider
+- In browser DevTools (F12), API keys may be visible in Network requests
+- For production/enterprise use, consider implementing a backend proxy
+- Never share your API keys or commit them to version control
+
 ## 📖 Usage
 
 1. Open Excel and go to the **Home** tab
 2. Click the **OpenLLM** button to open the task pane
-3. Enter your API key (for the selected provider)
+3. Configure your API key (see above)
 4. Select your preferred model
 5. Start chatting with the AI assistant!
 
@@ -240,11 +307,78 @@ npm run dev-server
 npm run start
 ```
 
+## 🔑 APIキーの設定
+
+このアドインは**3つの方法**でAPIキーを管理でき、以下の優先順位で使用されます：
+
+| 優先順位 | 方法 | 推奨用途 |
+|:-------:|------|---------|
+| 1 | 環境変数 | 開発者、CI/CD |
+| 2 | Office Settings API | 一般ユーザー（保存＆同期） |
+| 3 | UI入力フィールド | 簡易テスト |
+
+### 方法1: 環境変数（開発者向け推奨）
+
+1. サンプルファイルをコピー:
+```bash
+cp .env.local.example .env.local
+```
+
+2. `.env.local` にAPIキーを設定:
+```bash
+# OpenAI
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx
+
+# Anthropic Claude
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxxxxx
+
+# Google Gemini
+GEMINI_API_KEY=AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+3. 開発サーバーを再起動:
+```bash
+npm run dev-server
+```
+
+> **注意**: `.env.local` は gitignore されているため、コミットされません。
+
+### 方法2: Office Settings API（一般ユーザー向け推奨）
+
+1. 入力フィールドにAPIキーを入力
+2. **💾 保存** ボタンをクリック
+3. キーはMicrosoftアカウントに安全に保存されます
+4. 別のデバイスでも自動的に同期されます
+
+> **メリット**: 
+> - ブラウザのlocalStorageではなく、Microsoftクラウドに保存
+> - 複数デバイス間で自動同期
+> - ブラウザデータを削除しても保持される
+
+### 方法3: UI入力（簡易テスト用）
+
+入力フィールドにAPIキーを入力してすぐに使用できます。
+
+> **注意**: この方法で入力したキーは保存されず、セッションごとに再入力が必要です。
+
+### APIキーのテスト
+
+**🔌 テスト** ボタンをクリックして、APIキーが正しく動作するか確認できます。
+
+### セキュリティに関する注意事項
+
+⚠️ **重要なセキュリティ情報**:
+
+- APIキーはブラウザからLLMプロバイダーに直接送信されます
+- ブラウザの開発者ツール（F12）のネットワークタブでAPIキーが見える場合があります
+- 本番環境や企業での利用には、バックエンドプロキシの実装を検討してください
+- APIキーを他人と共有したり、バージョン管理にコミットしたりしないでください
+
 ## 📖 使い方
 
 1. Excelを開き、**ホーム**タブに移動
 2. **OpenLLM**ボタンをクリックしてタスクペインを開く
-3. APIキーを入力（選択したプロバイダー用）
+3. APIキーを設定（上記参照）
 4. 使用するモデルを選択
 5. AIアシスタントとチャット開始！
 

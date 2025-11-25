@@ -6,6 +6,16 @@
 
 /* global console, document, Excel, Office */
 
+import { 
+  getApiKey, 
+  saveApiKey, 
+  deleteApiKey, 
+  testApiKey, 
+  ApiKeySource,
+  restoreApiKeyToInput,
+  getAllKeyStatus 
+} from './config.js';
+
 // グローバル変数で選択されたセルのアドレスとテキストを保持
 let selectedCellAddress = "";
 let selectedCellValue = "";
@@ -35,14 +45,139 @@ Office.onReady(async (info) => {
     document.getElementById("file-input").addEventListener("change", handleFileUpload);
     document.getElementById("clear-files-button").addEventListener("click", clearUploadedFiles);
     
+    // APIキー管理ボタンのイベントリスナー
+    document.getElementById("save-api-key-button").addEventListener("click", handleSaveApiKey);
+    document.getElementById("test-api-key-button").addEventListener("click", handleTestApiKey);
+    document.getElementById("delete-api-key-button").addEventListener("click", handleDeleteApiKey);
+    document.getElementById("model-select").addEventListener("change", handleModelChange);
+    
     // Enterキーで送信
     document.getElementById("message-input").addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         handleSendMessage();
       }
     });
+
+    // 初期化: 保存済みAPIキーを復元
+    initializeApiKey();
   }
 });
+
+// APIキーの初期化と復元
+function initializeApiKey() {
+  const { provider } = getProviderAndModel();
+  const { key, source } = getApiKey(provider);
+  
+  const statusEl = document.getElementById("api-key-status");
+  
+  if (source === ApiKeySource.ENV) {
+    // 環境変数から読み込まれた場合
+    statusEl.textContent = "✓ 環境変数からAPIキーを読み込みました";
+    statusEl.className = "info";
+    document.getElementById("api-key-input").placeholder = "環境変数から設定済み";
+    document.getElementById("api-key-input").disabled = true;
+  } else if (source === ApiKeySource.SAVED) {
+    // 保存済みキーを復元
+    restoreApiKeyToInput(provider);
+    statusEl.textContent = "✓ 保存済みのAPIキーを復元しました";
+    statusEl.className = "info";
+  } else {
+    statusEl.textContent = "";
+    statusEl.className = "";
+  }
+  
+  // 3秒後にステータスメッセージを消す
+  if (source !== ApiKeySource.NONE) {
+    setTimeout(() => {
+      if (statusEl.textContent.includes("復元") || statusEl.textContent.includes("読み込み")) {
+        statusEl.className = "";
+        statusEl.textContent = "";
+      }
+    }, 3000);
+  }
+}
+
+// モデル変更時にAPIキーを復元
+function handleModelChange() {
+  const { provider } = getProviderAndModel();
+  const { source } = getApiKey(provider);
+  
+  // 環境変数がない場合のみ、保存済みキーを復元
+  if (source !== ApiKeySource.ENV) {
+    document.getElementById("api-key-input").disabled = false;
+    restoreApiKeyToInput(provider);
+  } else {
+    document.getElementById("api-key-input").disabled = true;
+    document.getElementById("api-key-input").value = "";
+    document.getElementById("api-key-input").placeholder = "環境変数から設定済み";
+  }
+}
+
+// APIキー保存ハンドラ
+async function handleSaveApiKey() {
+  const { provider } = getProviderAndModel();
+  const key = document.getElementById("api-key-input").value;
+  const statusEl = document.getElementById("api-key-status");
+  
+  if (!key) {
+    statusEl.textContent = "⚠ APIキーを入力してください";
+    statusEl.className = "error";
+    return;
+  }
+  
+  try {
+    await saveApiKey(provider, key);
+    statusEl.textContent = "✓ APIキーを保存しました";
+    statusEl.className = "success";
+  } catch (e) {
+    statusEl.textContent = "✗ 保存に失敗しました: " + e.message;
+    statusEl.className = "error";
+  }
+}
+
+// APIキーテストハンドラ
+async function handleTestApiKey() {
+  const { provider } = getProviderAndModel();
+  const { key, source } = getApiKey(provider);
+  const statusEl = document.getElementById("api-key-status");
+  
+  if (!key) {
+    statusEl.textContent = "⚠ APIキーを入力してください";
+    statusEl.className = "error";
+    return;
+  }
+  
+  statusEl.textContent = "🔄 接続テスト中...";
+  statusEl.className = "info";
+  
+  const result = await testApiKey(provider, key);
+  
+  if (result.success) {
+    const sourceLabel = source === ApiKeySource.ENV ? "（環境変数）" : 
+                       source === ApiKeySource.SAVED ? "（保存済み）" : "";
+    statusEl.textContent = `✓ 接続成功 ${sourceLabel}`;
+    statusEl.className = "success";
+  } else {
+    statusEl.textContent = "✗ 接続失敗: " + result.error;
+    statusEl.className = "error";
+  }
+}
+
+// APIキー削除ハンドラ
+async function handleDeleteApiKey() {
+  const { provider } = getProviderAndModel();
+  const statusEl = document.getElementById("api-key-status");
+  
+  try {
+    await deleteApiKey(provider);
+    document.getElementById("api-key-input").value = "";
+    statusEl.textContent = "✓ 保存済みAPIキーを削除しました";
+    statusEl.className = "success";
+  } catch (e) {
+    statusEl.textContent = "✗ 削除に失敗しました: " + e.message;
+    statusEl.className = "error";
+  }
+}
 
 async function createTable() {
   await Excel.run(async (context) => {
@@ -460,8 +595,12 @@ async function sendToGemini(apiKey, model, system_prompt, userInput, aiMessageEl
 
 // 統合されたLLM送信関数
 async function sendToLLM(userInput, excel_prompt) {
-  const apiKey = document.getElementById("api-key-input").value;
   const { provider, model } = getProviderAndModel();
+  const { key: apiKey, source } = getApiKey(provider);
+  
+  if (!apiKey) {
+    throw new Error("APIキーが設定されていません。環境変数、保存済みキー、または入力欄から設定してください。");
+  }
   const system_prompt = buildSystemPrompt(excel_prompt);
   const files = [...uploadedFiles]; // コピーを作成
 
@@ -663,8 +802,12 @@ async function sendToGeminiForCode(apiKey, model, system_prompt, userInput) {
 
 // 統合されたコード生成関数
 async function sendToLLMForExcelCode(userInput, excel_prompt) {
-  const apiKey = document.getElementById("api-key-input").value;
   const { provider, model } = getProviderAndModel();
+  const { key: apiKey } = getApiKey(provider);
+  
+  if (!apiKey) {
+    throw new Error("APIキーが設定されていません。環境変数、保存済みキー、または入力欄から設定してください。");
+  }
   const system_prompt = buildCodeGenSystemPrompt(excel_prompt);
 
   try {
@@ -736,7 +879,12 @@ async function handleGenerateImage() {
   messageInput.value = "";
 
   try {
-    const apiKey = document.getElementById("api-key-input").value;
+    const { key: apiKey } = getApiKey(provider);
+    
+    if (!apiKey) {
+      throw new Error("APIキーが設定されていません。環境変数、保存済みキー、または入力欄から設定してください。");
+    }
+    
     let imageUrl;
 
     if (provider === 'openai-image') {

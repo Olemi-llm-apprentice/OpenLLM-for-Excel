@@ -3,6 +3,14 @@
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+
+// 環境変数の読み込み（.env.local があれば読み込む）
+try {
+  require("dotenv").config({ path: ".env.local" });
+} catch (e) {
+  // dotenvがない場合は無視
+}
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -54,6 +62,12 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      // 環境変数をビルド時に注入
+      new webpack.DefinePlugin({
+        __OPENAI_API_KEY__: JSON.stringify(process.env.OPENAI_API_KEY || ""),
+        __ANTHROPIC_API_KEY__: JSON.stringify(process.env.ANTHROPIC_API_KEY || ""),
+        __GEMINI_API_KEY__: JSON.stringify(process.env.GEMINI_API_KEY || ""),
+      }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
