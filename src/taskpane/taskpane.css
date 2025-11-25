@@ -1,0 +1,151 @@
+/* 
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
+ */
+
+/* 基本的なリセットとボックスサイジングの設定 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+ html,
+ body {
+     width: 100%;
+     height: 100%;
+     margin: 0;
+     padding: 0;
+     font-family: 'Segoe UI', sans-serif; /* フォントをSegoe UIに統一 */
+     background-color: #f4f4f4; /* 背景色を明るいグレーに設定 */
+ }
+ 
+ ul {
+     margin: 0;
+     padding: 0;
+ }
+
+ .markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+}
+
+@media (max-width: 767px) {
+  .markdown-body {
+      padding: 15px;
+  }
+}
+ 
+ .ms-welcome__header {
+    padding: 20px;
+    padding-bottom: 30px;
+    padding-top: 100px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    align-items: center;
+ }
+
+ .ms-welcome__main {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex: 1 0 0;
+    flex: 1 0 0;
+    padding: 10px 20px;
+ }
+ 
+ .ms-welcome__main > h2 {
+     width: 100%;
+     text-align: center;
+ }
+ 
+ .ms-welcome__features {
+     list-style-type: none;
+     margin-top: 20px;
+ }
+ 
+ .ms-welcome__features.ms-List .ms-ListItem {
+     padding-bottom: 20px;
+     display: -webkit-flex;
+     display: flex;
+ }
+ 
+ .ms-welcome__features.ms-List .ms-ListItem > .ms-Icon {
+     margin-right: 10px;
+ }
+ 
+ .ms-welcome__action.ms-Button--hero {
+     margin-top: 30px;
+ }
+ 
+.ms-Button.ms-Button--hero .ms-Button-label {
+  color: #0078d7;
+}
+
+.ms-Button.ms-Button--hero:hover .ms-Button-label,
+.ms-Button.ms-Button--hero:focus .ms-Button-label{
+  color: #005a9e;
+  cursor: pointer;
+}
+
+b {
+    font-weight: bold;
+}
+
+/* チャット機能のスタイル */
+#chat-container {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px;
+    margin-top: 20px;
+  }
+  
+  #message-area {
+    border: none;
+    width: 100%; /* 幅を親要素の100%に設定 */
+    height: 250px; 
+    overflow-y: auto;
+    margin-bottom: 10px;
+    font-size: 16px; /* 文字サイズを12pxに設定 */
+  }
+  
+  #message-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-right: 5px;
+    width: calc(100% - 75px);
+    border-radius: 4px;
+  }
+  
+  #send-button {
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+#send-button:hover {
+    background-color: #005a9e;
+}
+#api-key-container {
+
+  margin-top: 2px; /* 下の余白を5pxに設定 */
+}
+
+/* ボタンの下のマージンを狭める */
+#app-body .ms-Button {
+  margin-bottom: 2px; /* ボタンの下の余白を5pxに設定 */
+}

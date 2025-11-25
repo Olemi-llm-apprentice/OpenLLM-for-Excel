@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+debug.log
+npm-debug.log*
+
+# History
+.history/
+
+# Project specific
+.summaryignore
+generate_project_summary.py
+*_project_summary.txt
+
+# Office Add-in dev certs
+*.pem
+*.key
+*.crt
