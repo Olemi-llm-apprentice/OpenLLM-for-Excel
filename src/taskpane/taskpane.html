@@ -38,10 +38,16 @@
 <div id="model-select-container">
   <label for="model-select">モデル選択:</label>
   <select id="model-select">
-    <optgroup label="OpenAI チャット">
-      <option value="openai:gpt-4o">GPT-4o（推奨・画像入力対応）</option>
+    <optgroup label="OpenAI GPT-5シリーズ（最新・推奨）">
+      <option value="openai:gpt-5.1">GPT-5.1（最新・推奨）</option>
+      <option value="openai:gpt-5">GPT-5</option>
+      <option value="openai:gpt-5-mini">GPT-5 mini（高速・コスト効率）</option>
+      <option value="openai:gpt-5-nano">GPT-5 nano（最速・最低コスト）</option>
+    </optgroup>
+    <optgroup label="OpenAI GPT-4シリーズ">
+      <option value="openai:gpt-4.1">GPT-4.1（非推論モデル）</option>
+      <option value="openai:gpt-4o">GPT-4o（画像入力対応）</option>
       <option value="openai:gpt-4o-mini">GPT-4o mini（画像入力対応）</option>
-      <option value="openai:gpt-4.1">GPT-4.1</option>
       <option value="openai:gpt-4-turbo">GPT-4 Turbo</option>
     </optgroup>
     <optgroup label="OpenAI 画像生成">
@@ -52,10 +58,14 @@
       <option value="claude:claude-haiku-4-5-20251001">Claude Haiku 4.5（画像/PDF入力対応）</option>
       <option value="claude:claude-opus-4-5-20251101">Claude Opus 4.5（画像/PDF入力対応）</option>
     </optgroup>
-    <optgroup label="Google Gemini チャット">
-      <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash（推奨・画像/PDF入力対応）</option>
-      <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash（画像/PDF入力対応）</option>
+    <optgroup label="Google Gemini 3シリーズ（最新）">
+      <option value="gemini:gemini-3-pro-preview">Gemini 3 Pro Preview（最新・推奨・画像/PDF入力対応）</option>
+    </optgroup>
+    <optgroup label="Google Gemini 2.xシリーズ">
       <option value="gemini:gemini-2.5-pro">Gemini 2.5 Pro（画像/PDF入力対応）</option>
+      <option value="gemini:gemini-2.5-flash">Gemini 2.5 Flash（画像/PDF入力対応）</option>
+      <option value="gemini:gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite（最速）</option>
+      <option value="gemini:gemini-2.0-flash">Gemini 2.0 Flash（画像/PDF入力対応）</option>
     </optgroup>
     <optgroup label="Google Gemini 画像生成">
       <option value="gemini-image:gemini-3-pro-image-preview">Gemini 3 Pro Image（画像生成）</option>

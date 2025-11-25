@@ -1,9 +1,11 @@
-docs: 設計仕様書とCursor Rules/Commandsを追加
+feat: GPT-5シリーズとGemini 3 Proモデルの追加、ユニットテスト実装
 
-- docs/specs/ に設計仕様書を作成（アーキテクチャ、APIキー管理、LLM統合等）
-- .cursor/rules/design-specification.mdc を追加（設計仕様書作成ルール）
-- .cursor/commands/ に設計仕様書・作業ログ用コマンドを追加
-- APIキー管理のハイブリッド実装（環境変数/Office Settings/UI入力）
-- README.md にAPIキー設定方法を詳細に記載
-- config.js モジュールを新規作成
-- webpack.config.js に環境変数対応（DefinePlugin）
+- OpenAI GPT-5シリーズ（gpt-5.1, gpt-5, gpt-5-mini, gpt-5-nano）を追加
+- Gemini 3 Pro Preview対応を確認、存在しないモデルを削除
+- モデル利用可能性テストスクリプト（tests/model-availability.test.js）を新規作成
+- Jestユニットテストフレームワークのセットアップ（jest.config.js, tests/setup.js）
+- config.js、helpers.jsのユニットテスト追加（47テストケース、カバレッジ88%）
+- helpers.jsを新規作成してテスト可能なヘルパー関数を分離
+- 開発サーバーポートを3000→3002に変更
+- ライセンスレポート（docs/LICENSE_REPORT.md）を追加
+- モデルドキュメントを最新情報に更新

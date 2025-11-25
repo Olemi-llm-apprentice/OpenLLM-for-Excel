@@ -12,7 +12,7 @@ try {
   // dotenvがない場合は無視
 }
 
-const urlDev = "https://localhost:3000/";
+const urlDev = "https://localhost:3002/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 async function getHttpsOptions() {
@@ -66,7 +66,8 @@ module.exports = async (env, options) => {
       new webpack.DefinePlugin({
         __OPENAI_API_KEY__: JSON.stringify(process.env.OPENAI_API_KEY || ""),
         __ANTHROPIC_API_KEY__: JSON.stringify(process.env.ANTHROPIC_API_KEY || ""),
-        __GEMINI_API_KEY__: JSON.stringify(process.env.GEMINI_API_KEY || ""),
+        // GOOGLE_GENAI_API_KEY も GEMINI_API_KEY もサポート
+        __GEMINI_API_KEY__: JSON.stringify(process.env.GEMINI_API_KEY || process.env.GOOGLE_GENAI_API_KEY || ""),
       }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",

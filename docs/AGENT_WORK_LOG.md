@@ -360,3 +360,240 @@ README.mdの更新（英語版＋日本語版）
 
 ---
 
+[2025-11-26 01:40:41]
+
+## 作業内容
+
+ユニットテストフレームワークのセットアップとテスト実装
+
+### 実施した作業
+
+- Jestテストフレームワークのインストールと設定
+- `config.js`（APIキー管理モジュール）のユニットテスト作成（24テスト）
+- `helpers.js`（ヘルパー関数モジュール）を新規作成してテスト可能に分離
+- `helpers.js`のユニットテスト作成（23テスト）
+- テスト実行とカバレッジ確認（47テスト全て成功）
+
+### 変更したファイル
+
+- `package.json` - Jest関連依存と`test`/`test:coverage`スクリプト追加
+- `jest.config.js` - 新規作成（Jest設定ファイル）
+- `tests/setup.js` - 新規作成（テストセットアップ、Office/Excelモック）
+- `tests/config.test.js` - 新規作成（APIキー管理のテスト）
+- `tests/helpers.test.js` - 新規作成（ヘルパー関数のテスト）
+- `src/taskpane/helpers.js` - 新規作成（テスト可能なヘルパー関数を分離）
+- `src/taskpane/taskpane.js` - ヘルパー関数を外部モジュールからインポートに変更
+
+### テストカバレッジ
+
+| ファイル | Stmts | Branch | Funcs | Lines |
+|----------|-------|--------|-------|-------|
+| config.js | 83.51% | 73.21% | 100% | 83.14% |
+| helpers.js | 100% | 76.47% | 100% | 100% |
+| **全体** | **88.28%** | **73.97%** | **100%** | **88%** |
+
+### テストケース概要
+
+**config.js (24テスト)**
+- normalizeProvider: プロバイダー名の正規化（openai-image → openai等）
+- getApiKey: 優先順位（ENV > SAVED > INPUT > NONE）
+- saveApiKey/deleteApiKey: Office Settings API / localStorage
+- testApiKey: 各プロバイダーのAPIキーテスト
+- その他ユーティリティ関数
+
+**helpers.js (23テスト)**
+- getProviderAndModel: モデル選択の解析
+- buildSystemPrompt: システムプロンプト生成
+- buildOpenAIContent/buildClaudeContent/buildGeminiParts: マルチモーダル入力構築
+- buildCodeGenSystemPrompt: コード生成用プロンプト
+- fileToBase64: ファイルのBase64変換
+
+### 実行コマンド
+
+```bash
+npm test              # テスト実行
+npm run test:coverage # カバレッジ付きテスト実行
+```
+
+### 備考
+
+- ビルド確認済み（webpack 5.103.0 compiled successfully）
+- Office.jsとExcel APIはJestモックで代替
+- テストは`tests/`ディレクトリに配置
+
+---
+
+[2025-11-25 20:30:00]
+
+## 作業内容
+
+プロジェクトで使用されているライブラリのライセンス調査とレポート作成
+
+### 実施した作業
+
+- package.jsonの依存関係を分析
+- `npx license-checker`を使用して全ライブラリのライセンスを調査
+- ライセンス分布サマリーの作成
+- コンプライアンス要件の整理
+- リスク評価の実施
+
+### 変更したファイル
+
+- `docs/LICENSE_REPORT.md` - 新規作成（ライセンスレポート）
+
+### 調査結果サマリー
+
+| ライセンス | パッケージ数 |
+|-----------|------------|
+| MIT | 983 (84.0%) |
+| ISC | 57 (4.9%) |
+| Apache-2.0 | 41 (3.5%) |
+| BSD-2-Clause | 35 (3.0%) |
+| BSD-3-Clause | 33 (2.8%) |
+| その他 | 16 (1.4%) |
+
+### 備考
+
+- 全パッケージが商用利用可能なOSSライセンス
+- GPL/AGPL等の強いコピーレフトライセンスは含まれていない
+- 本番依存（dependencies）はcore-js（MIT）のみ
+
+---
+
+[2025-11-26 02:11:30]
+
+## 作業内容
+
+ユニットテストの実装、開発環境設定の改善、Excel JavaScript APIプロンプト改善
+
+### 実施した作業
+
+- Jestテストフレームワークのセットアップ（jest.config.js、setup.js作成）
+- `config.js`のユニットテスト作成（24テストケース）
+- `helpers.js`を新規作成してテスト可能なヘルパー関数を分離
+- `helpers.js`のユニットテスト作成（23テストケース）
+- テスト実行確認（47テスト全て成功、カバレッジ88%）
+- 開発サーバーのポートを3000→3002に変更（package.json、webpack.config.js、manifest.xml）
+- 環境変数名の対応追加（`GOOGLE_GENAI_API_KEY` → `GEMINI_API_KEY`へのフォールバック）
+- Excel JavaScript APIコード生成プロンプトの改善（API制約の明記）
+- エラー時の生成コードログ出力機能追加（コンソール＋UI表示）
+
+### 変更したファイル
+
+- `package.json` - Jest依存追加、testスクリプト追加、ポート3002に変更
+- `jest.config.js` - 新規作成（Jest設定）
+- `tests/setup.js` - 新規作成（Office/Excelモック）
+- `tests/config.test.js` - 新規作成（APIキー管理テスト）
+- `tests/helpers.test.js` - 新規作成（ヘルパー関数テスト）
+- `src/taskpane/helpers.js` - 新規作成（テスト可能なヘルパー関数）
+- `src/taskpane/taskpane.js` - ヘルパー関数のインポート、エラーログ出力追加
+- `webpack.config.js` - ポート3002、GOOGLE_GENAI_API_KEYフォールバック追加
+- `manifest.xml` - ポート3002に変更
+
+### テストカバレッジ
+
+| ファイル | Stmts | Branch | Funcs | Lines |
+|----------|-------|--------|-------|-------|
+| config.js | 83.51% | 73.21% | 100% | 83.14% |
+| helpers.js | 100% | 76.47% | 100% | 100% |
+| **全体** | **88.28%** | **73.97%** | **100%** | **88%** |
+
+### 備考
+
+- Gemini 2.5 Proで動作確認済み（ピボットテーブル作成成功）
+- ピボットグラフはExcel JavaScript APIの制限により失敗（プロンプトで制約を明記して対応）
+- 環境変数はCursor再起動後に反映される
+
+---
+
+[2025-11-26 02:28:17]
+
+## 作業内容
+
+OpenAI GPT-5.1シリーズとGoogle Gemini 3 Proの最新モデル追加
+
+### 実施した作業
+
+- Web検索でOpenAI GPT-5.1シリーズおよびGemini 3 ProのAPIモデル名を調査
+- `taskpane.html`のモデル選択UIに以下のモデルを追加：
+  - GPT-5.1 Instant（高速応答）
+  - GPT-5.1 Thinking（高度な推論）
+  - GPT-5.1 Codex（コーディング特化）
+  - GPT-5.1 Codex Mini（軽量コーディング）
+  - Gemini 3 Pro（正式版）
+- モデルのグループ分けを整理（GPT-5.1シリーズ、GPT-5シリーズ、Gemini 3シリーズ、Gemini 2.xシリーズ）
+- ドキュメントの更新（`docs/openai-models.md`、`docs/google-gemini-models.md`）
+
+### 変更したファイル
+
+- `src/taskpane/taskpane.html` - モデル選択UIに最新モデルを追加、グループ分けを整理
+- `docs/openai-models.md` - GPT-5.1シリーズの詳細情報を追加
+- `docs/google-gemini-models.md` - Gemini 3シリーズの詳細情報を追加
+
+### 追加したモデル一覧
+
+| プロバイダー | モデルID | 説明 |
+|-------------|----------|------|
+| OpenAI | `gpt-5.1-instant` | 高速応答モデル |
+| OpenAI | `gpt-5.1-thinking` | 高度な推論モデル |
+| OpenAI | `gpt-5.1-codex` | コーディング特化モデル |
+| OpenAI | `gpt-5.1-codex-mini` | 軽量コーディングモデル |
+| Google | `gemini-3-pro` | Gemini 3 Pro正式版 |
+
+### 備考
+
+- Web検索で取得したAPIモデル名は信頼性が完全ではない可能性がある
+- モデル名が正式なAPIで異なる場合は、実際の呼び出し時にエラーになる可能性あり
+- 必要に応じてモデル名を修正する必要がある
+
+---
+
+[2025-11-26 02:33:45]
+
+## 作業内容
+
+モデル利用可能性テストの作成と実行、存在しないモデルの削除
+
+### 実施した作業
+
+- `tests/model-availability.test.js` を新規作成（モデルの実APIテストスクリプト）
+- `package.json` に `test:models` スクリプトを追加
+- テスト実行により、以下のモデルの存在を確認：
+  - ✅ OpenAI: `gpt-5.1`, `gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `gpt-4.1`, `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`
+  - ✅ Gemini: `gemini-3-pro-preview`, `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`, `gemini-2.0-flash`
+- 存在しないモデルを削除：
+  - ❌ `gpt-5.1-instant`, `gpt-5.1-thinking`, `gpt-5.1-codex`, `gpt-5.1-codex-mini`
+  - ❌ `gemini-3-pro`（正式版はまだ未提供）
+- GPT-5シリーズが `max_completion_tokens` パラメータを必要とすることを確認しテストに反映
+- ドキュメントを更新（openai-models.md, google-gemini-models.md）
+
+### 変更したファイル
+
+- `tests/model-availability.test.js` - 新規作成（モデルテストスクリプト）
+- `package.json` - `test:models` スクリプト追加
+- `src/taskpane/taskpane.html` - 存在しないモデルを削除
+- `docs/openai-models.md` - GPT-5シリーズの情報を修正、注意事項追加
+- `docs/google-gemini-models.md` - Gemini 3シリーズの情報を修正、注意事項追加
+
+### テスト結果サマリー
+
+| プロバイダー | 成功 | 失敗 | 結果 |
+|-------------|------|------|------|
+| OpenAI | 8 | 0 | ✅ 全て成功 |
+| Gemini | 5 | 0 | ✅ 全て成功 |
+| Claude | - | - | ⚠️ APIキー未設定のためスキップ |
+
+### 実行コマンド
+
+```bash
+npm run test:models
+```
+
+### 備考
+
+- GPT-5シリーズは `max_tokens` ではなく `max_completion_tokens` を使用する必要がある
+- `gemini-3-pro` 正式版はまだ利用不可、`gemini-3-pro-preview` を使用
+- Claude APIキーを設定すれば、Claudeモデルのテストも実行可能
+
+---
+
